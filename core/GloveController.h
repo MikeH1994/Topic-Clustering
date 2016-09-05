@@ -2,17 +2,26 @@
 #define _H_GLOVECONTROLLER_H_
 #include<string>
 #include<vector>
+#include<map>
 #include"FileReader.h"
+#include"GloveTopic.h"
 
 class GloveController{
+/*
+Handle the creation and processing of glove words
+*/
 protected:
-	std::string _filepath;
+	std::string _gloveFilepath;
 	int _nDimensions;
 	FileReader* _fileReader;
-	
+	std::vector<std::string> _topicFilepaths;
+	std::vector<GloveTopic> _topics;
+	void loadTopicWords();
 public:
-	GloveController(std::string filepath,int nDimensions);
-	
+	GloveController(std::string filepath,std::vector<std::string> topicFilepaths,int nDimensions);
+	GloveController(std::string gloveFilepath,int nDimensions);
+	void run();
+	void print();
 };
 
 #endif

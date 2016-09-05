@@ -4,6 +4,9 @@
 #include<vector>
 
 class GloveWord{
+/*
+Contains a word and its associated coordinate vector in GloVe
+*/
 protected:
 	std::string _word;
 	std::vector<float> _coords;
@@ -13,8 +16,10 @@ public:
 	std::vector<float> &getCoords();
 	std::string& getWord();
 	unsigned int getNDimensions();
-	float x(int index);
-	void setDimensions(std::vector<float> coords);
+	float getPositionInDimension(int index);
+	void setCoords(std::vector<float> coords);
+	void setCoords(float* array, int nDimensions);
+	void print();
 };
 
 #endif
