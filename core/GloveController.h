@@ -17,6 +17,9 @@ protected:
 	std::vector<std::string> _topicFilepaths;
 	std::vector<GloveTopic> _topics;
 	void loadTopicWords();
+	void writeOutputToFile();
+	std::vector<std::string> loadWordsFromFilepath(std::string filepath,std::vector<std::string> returnedVector);
+	GloveTopic getGloveTopicFromVector(std::vector<std::string> words, std::string name);
 public:
 	GloveController(std::string filepath,std::vector<std::string> topicFilepaths,int nDimensions);
 	GloveController(std::string gloveFilepath,int nDimensions);

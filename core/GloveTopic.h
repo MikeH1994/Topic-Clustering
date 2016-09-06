@@ -12,6 +12,7 @@ public:
 	GloveTopic(std::string topic, std::vector<GloveWord> wordsInTopic);
 	int getIndex(std::string &word);
 	GloveWord &getWord(int index);
+	std::vector<GloveWord> &getWordVector();
 	void printWords();
 	void print();
 	void computeTopicCentre();

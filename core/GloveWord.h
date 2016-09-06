@@ -2,6 +2,9 @@
 #define _H_WORDGLOVE_H_
 #include<string>
 #include<vector>
+#include <sstream>
+#include <fstream>
+#include <istream>
 
 class GloveWord{
 /*
@@ -17,9 +20,11 @@ public:
 	std::string& getWord();
 	unsigned int getNDimensions();
 	float getPositionInDimension(int index);
+	double getDistanceFromPoint(std::vector<float> &point);
 	void setCoords(std::vector<float> coords);
 	void setCoords(float* array, int nDimensions);
 	void print();
+	void writeToFile(std::ofstream &file);
 };
 
 #endif

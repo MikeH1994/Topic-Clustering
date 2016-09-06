@@ -1,5 +1,8 @@
 #include "GloveController.h"
 #include<unordered_map>
+#include <sstream>
+#include <fstream>
+#include <istream>
 GloveController::GloveController(std::string gloveFilepath,std::vector<std::string> topicFilepaths,int nDimensions){
 	_gloveFilepath = gloveFilepath;
 	_topicFilepaths = topicFilepaths;
@@ -32,24 +35,60 @@ void GloveController::run(){
 		}
 		//num++;
 	}while(_fileReader->nextLine());
-	
+	writeOutputToFile();
 }
 
 void GloveController::loadTopicWords(){
-	//TODO
-	//Test
-	std::vector<std::string> list = {"atom","neutron","proton","electron",
-					"muon","tau"};
-	std::vector<GloveWord> physicsWords;
-	for (unsigned int i = 0; i<list.size(); i++){
-		physicsWords.push_back(GloveWord(list[i]));
+	std::vector<std::string> wordVector;
+	for(unsigned int i = 0; i<_topicFilepaths.size(); i++){
+		wordVector = loadWordsFromFilepath(_topicFilepaths[i],wordVector);
+		_topics.push_back(getGloveTopicFromVector(wordVector,_topicFilepaths[i]));		
 	}
-	GloveTopic gt("physics",physicsWords);
-	_topics.push_back(gt);
 }
 
 void GloveController::print(){
 	for(unsigned int i = 0; i<_topics.size(); i++){
 		_topics[i].printWords();
+		for (unsigned int j =0 ;j<_topics.size(); j++){
+			
+		}
 	}
+}
+
+std::vector<std::string> GloveController::loadWordsFromFilepath(std::string filepath,std::vector<std::string> returnedVector){
+	returnedVector.clear();
+	std::ifstream file(filepath.c_str(),std::ifstream::in);
+	if (file.fail()) {
+			std::cout << "Was unable to open file " << filepath <<std::endl;
+			throw (std::string) "IOException in parseFile()";
+	}
+	std::string line;
+	while(getline(file,line)){
+		returnedVector.push_back(line);
+	}
+	file.close();
+	return returnedVector;
+}
+
+GloveTopic GloveController::getGloveTopicFromVector(std::vector<std::string> words,std::string name){
+	std::vector<GloveWord> gloveWordVector;
+	for(unsigned int i = 0; i<words.size(); i++){
+		gloveWordVector.push_back(GloveWord(words[i]));
+	}
+	return GloveTopic(name,gloveWordVector);
+}
+
+void GloveController::writeOutputToFile(){
+	std::string outputPath = "GloVeOutput.txt";
+	std::ofstream file;
+	file.open(outputPath);
+	std::vector<GloveWord> wordVector;
+	for(unsigned int i = 0; i<_topics.size(); i++){
+		_topics[i].writeToFile(file);
+		wordVector = _topics[i].getWordVector();
+		for(unsigned int j = 0; j<wordVector.size(); j++){
+			wordVector[j].writeToFile(file);
+		}
+	}
+	file.close();
 }

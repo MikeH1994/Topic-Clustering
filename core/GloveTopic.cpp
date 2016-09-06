@@ -49,17 +49,21 @@ GloveWord &GloveTopic::getWord(int index){
 
 void GloveTopic::printWords(){
 	print();
-	/*for(unsigned int i = 0; i<_wordsInTopic.size(); i++){
-		_wordsInTopic[i].print();
-	}
-	*/
+	//for(unsigned int i = 0; i<_wordsInTopic.size(); i++){
+		//std::cout<<_wordsInTopic[i].getWord()<<": "<<_wordsInTopic[i].getDistanceFromPoint(_coords)<<std::endl;
+		//_wordsInTopic[i].print();
+	//}
 }
 
 void GloveTopic::print(){
-	std::cout<<"--------------\n"<<_word<<" ";
+	std::cout<<"--------------\n"<<_word<<std::endl;
 	unsigned int nDimensions = getNDimensions();
 	for(unsigned int i = 0; i<nDimensions; i++){
 		std::cout<<_coords[i]<<"\t";
 	}
 	std::cout<<std::endl;
+}
+
+std::vector<GloveWord> &GloveTopic::getWordVector(){
+	return _wordsInTopic;
 }
