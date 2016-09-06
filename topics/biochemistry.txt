@@ -1,0 +1,11 @@
+protein
+glucose
+dna
+acid
+cell
+membrane
+nucleus
+aerobic
+antibody
+chromosone
+helix

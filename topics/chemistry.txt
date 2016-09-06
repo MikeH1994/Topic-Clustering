@@ -1,0 +1,10 @@
+acid
+proton
+neutron
+electron
+phenol
+alcohol
+covalent
+ionic
+carbon
+hydrogen
