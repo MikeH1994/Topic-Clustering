@@ -6,7 +6,7 @@
 
 GloveController::GloveController(std::string gloveFilepath,int nDimensions){
 	if(_saveOutput){
-		_outputFile.open("output.txt");
+		_outputFile.open("output.txt",std::ios_base::app);
 	}
 	_gloveFilepath = gloveFilepath;
 	_nDimensions = nDimensions;
