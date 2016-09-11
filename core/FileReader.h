@@ -29,6 +29,7 @@ public:
 	bool nextLine();
 	std::string getWord();
 	float* getCoords();
+	void reset();
 };
 	
 #endif

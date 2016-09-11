@@ -3,20 +3,24 @@
 #include <sstream>
 #include <fstream>
 #include <istream>
-GloveController::GloveController(std::string gloveFilepath,std::vector<std::string> topicFilepaths,int nDimensions){
-	_gloveFilepath = gloveFilepath;
-	_topicFilepaths = topicFilepaths;
-	_nDimensions = nDimensions;
-	_fileReader = new FileReader(_gloveFilepath,_nDimensions);
-}
 
 GloveController::GloveController(std::string gloveFilepath,int nDimensions){
+	if(_saveOutput){
+		_outputFile.open("output.txt");
+	}
 	_gloveFilepath = gloveFilepath;
 	_nDimensions = nDimensions;
 	_fileReader = new FileReader(_gloveFilepath,_nDimensions);
 }
 
-void GloveController::run(){
+GloveController::~GloveController(){
+	if(_saveOutput){
+		_outputFile.close();
+	}
+}
+
+void GloveController::runListOfTopics(std::vector<std::string> topicFilepaths){
+	_topicFilepaths = topicFilepaths;
 	loadTopicWords();
 	std::string word;
 	float* arr;
@@ -46,15 +50,6 @@ void GloveController::loadTopicWords(){
 	}
 }
 
-void GloveController::print(){
-	for(unsigned int i = 0; i<_topics.size(); i++){
-		_topics[i].printWords();
-		for (unsigned int j =0 ;j<_topics.size(); j++){
-			
-		}
-	}
-}
-
 std::vector<std::string> GloveController::loadWordsFromFilepath(std::string filepath,std::vector<std::string> returnedVector){
 	returnedVector.clear();
 	std::ifstream file(filepath.c_str(),std::ifstream::in);
@@ -79,7 +74,7 @@ GloveTopic GloveController::getGloveTopicFromVector(std::vector<std::string> wor
 }
 
 void GloveController::writeOutputToFile(){
-	std::string outputPath = "GloVeOutput.txt";
+	std::string outputPath = "GloVeTopicsOutput.txt";
 	std::ofstream file;
 	file.open(outputPath);
 	std::vector<GloveWord> wordVector;
@@ -91,4 +86,24 @@ void GloveController::writeOutputToFile(){
 		}
 	}
 	file.close();
+}
+
+void GloveController::runQuery(std::string query){
+	_fileReader->reset();
+	bool wordFound = false;
+	float* arr;
+	std::string currentWord;
+	GloveWord word(query);
+	do{
+		currentWord = _fileReader->getWord();
+		if (currentWord==query){
+			wordFound = true;
+			arr = _fileReader->getCoords();
+			word.setCoords(arr,_nDimensions);	
+		}
+	}while(_fileReader->nextLine() && !wordFound);
+	if (_saveOutput){
+		word.writeToFile(_outputFile);
+	}
+	word.print();
 }

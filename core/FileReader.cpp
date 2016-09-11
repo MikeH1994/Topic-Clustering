@@ -63,3 +63,9 @@ float* FileReader::getCoords(){
 std::string FileReader::getWord(){
 	return _currentWord;
 }
+
+void FileReader::reset(){
+	_file.close();
+	_file = std::ifstream(_filepath.c_str(),std::ifstream::in);
+	nextLine();
+}

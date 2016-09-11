@@ -43,10 +43,10 @@ void GloveWord::setCoords(float* array, int nDimensions){
 }
 
 void GloveWord::print(){
-	std::cout<<_word<<" ";
+	std::cout<<_word;
 	unsigned int nDimensions = getNDimensions();
 	for(unsigned int i = 0; i<nDimensions; i++){
-		std::cout<<_coords[i]<<"\t";
+		std::cout<<"\t"<<_coords[i];
 	}
 	std::cout<<std::endl;
 }
